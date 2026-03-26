@@ -84,7 +84,7 @@ doc-assistant/
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/doc-assistant.git
+git clone https://github.com/Samymayanga/doc-assistant.git
 cd doc-assistant
 ```
 
