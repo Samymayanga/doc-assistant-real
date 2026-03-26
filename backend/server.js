@@ -4,37 +4,51 @@ const cors = require("cors");
 const analyzeRoute = require("./routes/analyse");
 
 const app = express();
-// ✅ CRITICAL: Use the PORT from environment (Render sets this)
 const PORT = process.env.PORT || 5000;
 
-// CORS
+// ✅ CORS configuration
 app.use(cors({
   origin: process.env.FRONTEND_URL || 'https://doc-assistant-real.vercel.app',
   methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  credentials: true,
 }));
+
+// ✅ Handle OPTIONS preflight
+app.options('*', (req, res) => {
+  res.header('Access-Control-Allow-Origin', process.env.FRONTEND_URL || '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.sendStatus(200);
+});
 
 app.use(express.json());
 
-// ✅ IMPORTANT: Add a simple health check at root level
+// ✅ Health check endpoints
 app.get("/", (req, res) => {
-  res.json({ status: "ok", message: "Backend is running" });
+  res.json({ status: "ok", message: "Doc Assistant Backend is running" });
 });
 
 app.get("/health", (req, res) => {
-  res.json({ status: "ok", message: "Server is healthy" });
+  res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
-// Your API routes
+// ✅ Your routes
 app.use("/api", analyzeRoute);
 
-// 404 handler
+// ✅ 404 handler
 app.use((req, res) => {
   res.status(404).json({ error: `Route ${req.method} ${req.url} not found` });
 });
 
-// ✅ Bind to 0.0.0.0 (required for Render)
+// ✅ Error handler
+app.use((err, req, res, next) => {
+  console.error('Server error:', err);
+  res.status(500).json({ error: "Internal server error" });
+});
+
+// ✅ Bind to 0.0.0.0 for Render
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`✅ Server running on port ${PORT}`);
+  console.log(`✅ Environment: ${process.env.NODE_ENV || 'development'}`);
 });
