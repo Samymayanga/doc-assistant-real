@@ -15,7 +15,7 @@ const analyzeRoute = require("./routes/analyse");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors({ origin: process.env.FRONTEND_URL || "https://doc-assistant-real-samymayangas-projects.vercel.app" }));
+app.use(cors({ origin: process.env.FRONTEND_URL || "https://doc-assistant-real.vercel.app" }));
 app.use(express.json());
 
 app.get("/health", (req, res) => res.json({ status: "ok" }));
