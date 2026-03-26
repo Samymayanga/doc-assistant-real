@@ -1,4 +1,3 @@
-// server.js
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
@@ -7,7 +6,7 @@ const analyzeRoute = require("./routes/analyse");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// CRITICAL: CORS must work regardless of NODE_ENV
+// ✅ Correct CORS setup - don't use app.options('*', ...)
 app.use(cors({
   origin: process.env.FRONTEND_URL || 'https://doc-assistant-real.vercel.app',
   methods: ['GET', 'POST', 'OPTIONS'],
@@ -15,17 +14,28 @@ app.use(cors({
   credentials: true,
 }));
 
-// CRITICAL: Handle OPTIONS for all routes
-app.options('*', cors());
-
 app.use(express.json());
 
-// Your routes
+// Health check
 app.get("/health", (req, res) => res.json({ status: "ok" }));
+
+// Your API routes
 app.use("/api", analyzeRoute);
+
+// ❌ REMOVE this line - it's causing the error:
+// app.options('*', cors());
+
+// ✅ If you need to handle OPTIONS globally, use this instead:
+app.use((req, res, next) => {
+  if (req.method === 'OPTIONS') {
+    res.header('Access-Control-Allow-Origin', process.env.FRONTEND_URL || '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    return res.sendStatus(200);
+  }
+  next();
+});
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-  console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
-  console.log(`FRONTEND_URL: ${process.env.FRONTEND_URL}`);
 });
