@@ -1,0 +1,204 @@
+.upload-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  padding: 20px 0;
+  animation: fadeIn 0.5s ease;
+}
+
+.upload-intro {
+  text-align: center;
+  max-width: 560px;
+}
+
+.upload-title {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 5vw, 52px);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
+.upload-title em {
+  color: var(--accent);
+  font-style: italic;
+}
+
+.upload-subtitle {
+  color: var(--text-muted);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* ── Drop zone ── */
+.drop-zone {
+  width: 100%;
+  max-width: 560px;
+  border: 1.5px dashed var(--border);
+  border-radius: 12px;
+  padding: 48px 32px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s;
+  background: var(--surface);
+  color: var(--text-muted);
+}
+
+.drop-zone:hover,
+.drop-zone.dragging {
+  border-color: var(--accent);
+  background: rgba(255, 215, 0, 0.05);
+  color: var(--accent);
+}
+
+.drop-zone.has-file {
+  cursor: default;
+  border-style: solid;
+  border-color: var(--accent2);
+  background: rgba(79, 209, 168, 0.04);
+}
+
+.drop-icon {
+  margin-bottom: 16px;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.drop-zone:hover .drop-icon,
+.drop-zone.dragging .drop-icon {
+  opacity: 1;
+}
+
+.drop-primary {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.drop-secondary {
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.drop-hint {
+  font-size: 11px;
+  color: whitesmoke;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ── File preview ── */
+.file-preview {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-align: left;
+}
+
+.file-icon {
+  font-size: 36px;
+}
+
+.file-info {
+  flex: 1;
+}
+
+.file-name {
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  word-break: break-all;
+}
+
+.file-size {
+  color: var(--text-muted);
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.file-remove {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.file-remove:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+/* ── Error ── */
+.upload-error {
+  color: var(--danger);
+  font-size: 13px;
+}
+
+/* ── Analyze button ── */
+.analyze-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: all 0.2s;
+  animation: fadeIn 0.3s ease;
+}
+
+.analyze-btn:hover {
+  background: #ffd966;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(255, 215, 0, 0.35);
+}
+
+.btn-arrow {
+  font-size: 18px;
+  color: black;
+  font-weight: 600;
+  transition: transform 0.2s;
+}
+
+img {
+  height: 30px;
+  width: 30px;
+}
+
+.analyze {
+  color: black;
+  font-weight: 600;
+}
+
+.analyze-btn:hover .btn-arrow {
+  transform: translateX(4px);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

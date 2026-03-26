@@ -1,0 +1,109 @@
+.loading-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: 28px;
+  animation: fadeIn 0.4s ease;
+}
+
+.loading-orb {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.orb-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid transparent;
+}
+
+.r1 {
+  border-top-color: var(--accent);
+  animation: spin 1.4s linear infinite;
+}
+
+.r2 {
+  inset: 10px;
+  border-right-color: var(--accent2);
+  animation: spin 2s linear infinite reverse;
+}
+
+.r3 {
+  inset: 20px;
+  border-bottom-color: var(--accent);
+  animation: spin 1.8s linear infinite;
+  opacity: 0.5;
+}
+
+.orb-core {
+  font-size: 28px;
+  color: var(--accent);
+  animation: pulseSlow 2s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulseSlow {
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+.loading-msg {
+  color: var(--text-muted);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  height: 20px;
+  transition: all 0.3s;
+}
+
+.loading-bar {
+  width: 280px;
+  height: 2px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.loading-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  border-radius: 2px;
+  animation: fillBar linear forwards;
+  width: 0;
+}
+
+@keyframes fillBar {
+  from {
+    width: 0;
+  }
+  to {
+    width: 95%;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
