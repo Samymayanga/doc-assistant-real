@@ -6,25 +6,27 @@ const analyzeRoute = require("./routes/analyse");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// ✅ CORS configuration
+// CORS configuration
 app.use(cors({
   origin: process.env.FRONTEND_URL || 'https://doc-assistant-real.vercel.app',
   methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
-  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
-// ✅ Handle OPTIONS preflight
-app.options('*', (req, res) => {
-  res.header('Access-Control-Allow-Origin', process.env.FRONTEND_URL || '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  res.sendStatus(200);
+// ✅ FIX: Handle OPTIONS preflight requests (replaces app.options('*', cors()))
+app.use((req, res, next) => {
+  if (req.method === 'OPTIONS') {
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.sendStatus(200);
+  } else {
+    next();
+  }
 });
 
 app.use(express.json());
 
-// ✅ Health check endpoints
+// Health check endpoints
 app.get("/", (req, res) => {
   res.json({ status: "ok", message: "Doc Assistant Backend is running" });
 });
@@ -33,22 +35,21 @@ app.get("/health", (req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
-// ✅ Your routes
+// Your routes
 app.use("/api", analyzeRoute);
 
-// ✅ 404 handler
+// 404 handler
 app.use((req, res) => {
   res.status(404).json({ error: `Route ${req.method} ${req.url} not found` });
 });
 
-// ✅ Error handler
+// Error handler
 app.use((err, req, res, next) => {
-  console.error('Server error:', err);
+  console.error("Server error:", err);
   res.status(500).json({ error: "Internal server error" });
 });
 
-// ✅ Bind to 0.0.0.0 for Render
+// Bind to all interfaces
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`✅ Server running on port ${PORT}`);
-  console.log(`✅ Environment: ${process.env.NODE_ENV || 'development'}`);
 });
