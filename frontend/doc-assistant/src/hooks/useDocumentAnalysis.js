@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-// ✅ Get the backend URL from environment variable
+
 const API_URL = import.meta.env.VITE_API_URL;
 
 export function useDocumentAnalysis() {
@@ -17,7 +17,7 @@ export function useDocumentAnalysis() {
     formData.append("document", file);
 
     try {
-      // ✅ Use the full backend URL
+      
       const res = await fetch(`${API_URL}/api/analyze`, {
         method: "POST",
         body: formData,
